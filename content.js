@@ -1,4 +1,4 @@
-// US Credit & Debit Card Offer Recommender - Content Script Overlay
+// CardSpectra - Content Script Checkout Overlay
 
 (async function () {
   const currentDomain = window.location.hostname.replace(/^www\./, '');
@@ -31,15 +31,15 @@ function injectCheckoutOverlay(domain, top, offerCount) {
   const style = document.createElement('style');
   style.textContent = `
     .banner {
-      background: rgba(10, 14, 23, 0.94);
+      background: rgba(8, 12, 20, 0.94);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(212, 175, 55, 0.4);
+      border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 14px;
       padding: 14px 18px;
       color: #ffffff;
       width: 330px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(212, 175, 55, 0.15);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 20px rgba(56, 189, 248, 0.15);
       animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
@@ -56,9 +56,9 @@ function injectCheckoutOverlay(domain, top, offerCount) {
       align-items: center;
     }
     .brand {
-      font-weight: 700;
+      font-weight: 800;
       font-size: 12px;
-      color: #d4af37;
+      color: #38bdf8;
       letter-spacing: 0.5px;
       display: flex;
       align-items: center;
@@ -84,10 +84,10 @@ function injectCheckoutOverlay(domain, top, offerCount) {
       padding: 6px 10px;
       border-radius: 6px;
       background: ${top.card.gradient};
-      color: #fff;
+      color: ${top.card.textColor || '#fff'};
       font-weight: 700;
       font-size: 11px;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     }
     .card-name {
       font-weight: 700;
@@ -108,7 +108,7 @@ function injectCheckoutOverlay(domain, top, offerCount) {
       color: #cbd5e1;
     }
     .view-btn {
-      background: linear-gradient(135deg, #d4af37, #b8860b);
+      background: linear-gradient(135deg, #38bdf8, #10b981);
       border: none;
       color: #000;
       font-weight: 700;
@@ -128,7 +128,7 @@ function injectCheckoutOverlay(domain, top, offerCount) {
   banner.className = 'banner';
   banner.innerHTML = `
     <div class="header">
-      <div class="brand">💳 CARD OFFER RECOMMENDER</div>
+      <div class="brand">💳 CARDSPECTRA</div>
       <button class="close-btn" id="close-overlay">×</button>
     </div>
     

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "US Credit & Debit Card Offer Recommender",
+  "name": "CardSpectra - Credit & Debit Offer Recommender",
   "version": "1.0.0",
-  "description": "Automatically find the best card and activated targeted offers (Amex, Chase, CapOne, Citi) at online checkout.",
+  "description": "Automatically find the best card and activated targeted offers (Amex, Chase, CapOne, Citi, Discover) at online checkout.",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

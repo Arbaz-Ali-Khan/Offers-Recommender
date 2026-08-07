@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offer Recommender Widget</title>
+  <title>CardSpectra Widget</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body {
       padding: 16px;
       min-height: 100vh;
-      background: rgba(10, 14, 23, 0.95);
+      background: rgba(8, 12, 20, 0.95);
     }
     .widget-container {
       display: flex;
@@ -26,18 +26,18 @@
     }
     .widget-title {
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .widget-domain-tag {
       font-size: 0.75rem;
-      background: rgba(212, 175, 55, 0.15);
-      color: var(--primary-gold);
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--primary-accent);
       padding: 2px 8px;
       border-radius: var(--radius-full);
-      font-weight: 600;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -45,14 +45,14 @@
   <div class="widget-container">
     <div class="widget-header">
       <div class="widget-title">
-        <span>💳</span> Offer Recommender
+        <span>💳</span> CardSpectra
       </div>
       <span id="widget-domain" class="widget-domain-tag">nike.com</span>
     </div>
 
     <!-- Spotlight Best Card for Embed -->
     <div class="best-card-spotlight" style="padding: 16px; margin-bottom: 14px;">
-      <div style="font-size: 0.75rem; color: var(--primary-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
+      <div style="font-size: 0.75rem; color: var(--primary-accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
         BEST CARD TO USE HERE
       </div>
       
