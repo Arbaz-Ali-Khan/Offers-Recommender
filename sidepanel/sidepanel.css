@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-primary: #0a0e17;
+  --bg-surface: rgba(22, 28, 45, 0.85);
+  --primary-gold: #d4af37;
+  --accent-emerald: #10b981;
+  --accent-sapphire: #0f52ba;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  padding: 16px;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.brand {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary-gold);
+}
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin: 16px 0 8px 0;
+}
+
+.input-box {
+  width: 100%;
+  padding: 10px 14px;
+  background: #161c2d;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.input-box:focus {
+  border-color: var(--primary-gold);
+}
+
+.rankings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ranking-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.ranking-card.top-rank {
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+.yield-text {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent-emerald);
+}

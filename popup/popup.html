@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Offer Recommender</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div>
+    <div class="header">
+      <div class="brand">💳 Offer Recommender</div>
+      <span id="popup-domain" class="domain-badge">Active Domain</span>
+    </div>
+
+    <div class="card-spotlight">
+      <div style="font-size: 0.7rem; color: var(--primary-gold); font-weight: 700; text-transform: uppercase;">
+        TOP CARD FOR THIS SITE
+      </div>
+      
+      <div id="popup-card-visual" class="spotlight-card-visual"></div>
+      
+      <div id="popup-yield" class="spotlight-yield">$0.00</div>
+      <div id="popup-details" style="font-size: 0.75rem; color: var(--text-muted);"></div>
+    </div>
+
+    <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">
+      Other Cards in Wallet:
+    </div>
+
+    <div id="popup-rankings" class="rankings-scroll"></div>
+  </div>
+
+  <button id="open-sidepanel-btn" class="footer-btn">Open Full Side Panel ➔</button>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

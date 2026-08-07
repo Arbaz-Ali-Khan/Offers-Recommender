@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Node / npm
+node_modules/
+npm-debug.log*
+
+# Extension build zip files
+*.zip
+*.crx
+
+# Local IDE
+.idea/
+.vscode/
+.gemini/

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Offer Recommender Side Panel</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="header">
+    <div class="brand">💳 Offer Recommender</div>
+    <span id="sp-domain-tag" style="font-size: 0.75rem; background: rgba(212,175,55,0.15); color: var(--primary-gold); padding: 2px 8px; border-radius: 100px; font-weight: 600;">active tab</span>
+  </div>
+
+  <div>
+    <label style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Simulated Transaction Spend ($)</label>
+    <input type="number" id="sp-amount-input" class="input-box" value="100" min="1">
+  </div>
+
+  <div class="section-title">Wallet Card Yield Breakdown</div>
+  <div id="sp-rankings-container" class="rankings-list"></div>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>

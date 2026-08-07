@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>US Credit & Debit Card Offer Recommender</title>
+  <meta name="description" content="Universal US Credit & Debit Card Offer Recommender & Embeddable Web Widget. Maximize cash back, targeted Amex/Chase offers, and reward point multipliers.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header Navbar -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon">💳</div>
+        <div>
+          <h1 class="brand-title">Offer Recommender</h1>
+          <div class="brand-subtitle">US CREDIT & DEBIT CARD REWARDS</div>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="tab-recommender">Recommender</button>
+        <button class="nav-tab" data-tab="tab-portfolio">My Cards</button>
+        <button class="nav-tab" data-tab="tab-offers">Active Deals</button>
+        <button class="nav-tab" data-tab="tab-embed">Embed Widget</button>
+      </nav>
+    </header>
+
+    <!-- Tab 1: Recommender (Default) -->
+    <main id="tab-recommender" class="tab-content active">
+      <!-- Input Panel -->
+      <section class="glass-panel">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">Find Best Card & Activated Deals</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Enter a US merchant domain or brand name to calculate your highest returning card in real time.</p>
+        
+        <div class="search-box-wrapper">
+          <div class="input-group">
+            <label class="input-label" for="merchant-input">Merchant Domain / Name</label>
+            <input type="text" id="merchant-input" class="form-control" placeholder="e.g. nike.com, dell.com, starbucks.com" value="nike.com" autocomplete="off">
+          </div>
+          
+          <div class="input-group" style="max-width: 180px;">
+            <label class="input-label" for="amount-input">Spend Amount ($)</label>
+            <input type="number" id="amount-input" class="form-control" value="100" min="1">
+          </div>
+          
+          <div style="align-self: flex-end;">
+            <button id="calculate-btn" class="btn btn-primary">
+              <span>Calculate Top Yield</span> ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Merchants -->
+        <div class="quick-merchants">
+          <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 600;">Popular Merchants:</span>
+          <button class="merchant-pill active" data-domain="nike.com">Nike</button>
+          <button class="merchant-pill" data-domain="dell.com">Dell</button>
+          <button class="merchant-pill" data-domain="starbucks.com">Starbucks</button>
+          <button class="merchant-pill" data-domain="amazon.com">Amazon</button>
+          <button class="merchant-pill" data-domain="bestbuy.com">Best Buy</button>
+          <button class="merchant-pill" data-domain="marriott.com">Marriott</button>
+          <button class="merchant-pill" data-domain="uber.com">Uber</button>
+        </div>
+      </section>
+
+      <!-- Results Grid -->
+      <section class="results-grid">
+        <!-- Left Column: Spotlight Best Card -->
+        <div class="best-card-spotlight">
+          <span class="badge-top">Top Recommendation</span>
+          
+          <div id="spotlight-card-container" style="margin: 24px 0 16px 0;">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="yield-subtitle">Estimated Financial Return</div>
+          <div id="spotlight-yield" class="yield-amount">$0.00</div>
+          <div id="spotlight-details" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Right Column: Full Rankings -->
+        <div class="glass-panel" style="margin-bottom: 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="font-size: 1.1rem; font-weight: 700;">Full Wallet Rankings</h3>
+            <span id="matching-offers-count" style="font-size: 0.8rem; background: rgba(212,175,55,0.15); color: var(--primary-gold); padding: 4px 12px; border-radius: var(--radius-full); font-weight: 600;">
+              1 Targeted Offer Available
+            </span>
+          </div>
+
+          <div id="rankings-container" class="rankings-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Tab 2: My Card Portfolio -->
+    <section id="tab-portfolio" class="tab-content" style="display: none;">
+      <div class="glass-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="font-size: 1.4rem; font-weight: 700;">My Credit & Debit Cards</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Select the cards you currently hold to personalize recommendations across all browsers and the extension.</p>
+          </div>
+          <div>
+            <button id="select-all-cards" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Select All</button>
+            <button id="clear-all-cards" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Clear All</button>
+          </div>
+        </div>
+
+        <div id="portfolio-grid" class="portfolio-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Active Deals & Targeted Offers Feed -->
+    <section id="tab-offers" class="tab-content" style="display: none;">
+      <div class="glass-panel">
+        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Active Targeted Deals & Multipliers</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Browse targeted Amex Offers, Chase Offers, and rotating categories available across US issuers.</p>
+
+        <div id="offers-feed-container" class="rankings-list">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Embed Widget Generator -->
+    <section id="tab-embed" class="tab-content" style="display: none;">
+      <div class="glass-panel">
+        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Embed Universal Recommender Widget</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Embed this offer recommender on any website, blog, or checkout flow using an iframe.</p>
+
+        <div style="margin-bottom: 24px;">
+          <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">Live Widget Preview:</h4>
+          <div style="display: flex; justify-content: center; background: rgba(0,0,0,0.4); padding: 24px; border-radius: var(--radius-md);">
+            <iframe id="live-widget-iframe" src="widget.html?domain=nike.com&amount=100" style="width: 360px; height: 500px; border: none; border-radius: 16px; box-shadow: var(--shadow-main);"></iframe>
+          </div>
+        </div>
+
+        <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">HTML Embed Code:</h4>
+        <div class="code-box">
+          <button class="btn btn-secondary copy-btn" id="copy-code-btn">Copy HTML</button>
+          <code id="embed-code-snippet">&lt;iframe src="https://your-domain.com/widget.html?domain=nike.com" style="width:360px; height:500px; border:none; border-radius:16px;" loading="lazy"&gt;&lt;/iframe&gt;</code>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

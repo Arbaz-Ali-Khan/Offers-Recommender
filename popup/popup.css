@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-primary: #0a0e17;
+  --bg-surface: #161c2d;
+  --primary-gold: #d4af37;
+  --accent-emerald: #10b981;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 350px;
+  height: 480px;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.brand {
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-main);
+}
+
+.domain-badge {
+  font-size: 0.75rem;
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--primary-gold);
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+.card-spotlight {
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.1) 0%, rgba(22, 28, 45, 0.9) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.spotlight-card-visual {
+  height: 90px;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.spotlight-yield {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-emerald);
+}
+
+.rankings-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ranking-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.footer-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--primary-gold), #b8860b);
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.footer-btn:hover {
+  opacity: 0.9;
+}

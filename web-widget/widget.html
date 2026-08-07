@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offer Recommender Widget</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      padding: 16px;
+      min-height: 100vh;
+      background: rgba(10, 14, 23, 0.95);
+    }
+    .widget-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .widget-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .widget-domain-tag {
+      font-size: 0.75rem;
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--primary-gold);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="widget-header">
+      <div class="widget-title">
+        <span>💳</span> Offer Recommender
+      </div>
+      <span id="widget-domain" class="widget-domain-tag">nike.com</span>
+    </div>
+
+    <!-- Spotlight Best Card for Embed -->
+    <div class="best-card-spotlight" style="padding: 16px; margin-bottom: 14px;">
+      <div style="font-size: 0.75rem; color: var(--primary-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
+        BEST CARD TO USE HERE
+      </div>
+      
+      <div id="w-card-container"></div>
+      
+      <div id="w-yield" class="yield-amount" style="font-size: 1.75rem; margin: 8px 0 2px 0;">$0.00</div>
+      <div id="w-details" style="font-size: 0.8rem; color: var(--text-muted);"></div>
+    </div>
+
+    <!-- Top 3 Runner Up Cards -->
+    <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">
+      Other Cards in Wallet:
+    </div>
+    
+    <div id="w-rankings" class="rankings-list" style="gap: 8px; flex: 1; overflow-y: auto;"></div>
+  </div>
+
+  <script type="module" src="widget.js"></script>
+</body>
+</html>
