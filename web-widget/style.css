@@ -2,16 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --bg-primary: #0a0e17;
-  --bg-surface: rgba(22, 28, 45, 0.85);
-  --bg-surface-hover: rgba(33, 41, 66, 0.9);
-  --bg-card: rgba(30, 41, 59, 0.6);
+  --bg-primary: #080c14;
+  --bg-surface: rgba(18, 24, 38, 0.85);
+  --bg-surface-hover: rgba(30, 40, 62, 0.9);
+  --bg-card: rgba(26, 35, 54, 0.7);
   --border-color: rgba(255, 255, 255, 0.12);
-  --border-highlight: rgba(212, 175, 55, 0.4);
+  --border-highlight: rgba(16, 185, 129, 0.4);
   
-  --primary-gold: #d4af37;
-  --primary-gold-glow: rgba(212, 175, 55, 0.25);
-  --accent-sapphire: #0f52ba;
+  --primary-accent: #38bdf8;
+  --primary-accent-glow: rgba(56, 189, 248, 0.25);
+  --accent-gold: #d4af37;
   --accent-emerald: #10b981;
   --accent-rose: #f43f5e;
   
@@ -24,8 +24,8 @@
   --radius-lg: 20px;
   --radius-full: 9999px;
   
-  --shadow-main: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.2);
+  --shadow-main: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.2);
   --backdrop-blur: blur(16px);
 }
 
@@ -39,8 +39,10 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-primary);
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(15, 82, 186, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(212, 175, 55, 0.12) 0%, transparent 40%);
+    /* Subtly floating translucent bank & card watermark pattern */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M20 30 h50 a6 6 0 0 1 6 6 v30 a6 6 0 0 1 -6 6 h-50 a6 6 0 0 1 -6 -6 v-30 a6 6 0 0 1 6 -6 z' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='2'/%3E%3Crect x='28' y='42' width='12' height='10' rx='2' fill='rgba(255,255,255,0.02)'/%3E%3Ccircle cx='95' cy='85' r='18' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='2'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.12) 0%, transparent 45%);
   color: var(--text-main);
   min-height: 100vh;
   line-height: 1.5;
@@ -48,7 +50,7 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -76,9 +78,9 @@ body {
 }
 
 .brand-icon {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, var(--primary-gold), var(--accent-sapphire));
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, var(--primary-accent), var(--accent-emerald));
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
@@ -86,18 +88,19 @@ body {
   box-shadow: var(--shadow-glow);
   font-weight: 800;
   font-size: 22px;
-  color: #fff;
+  color: #000;
 }
 
 .brand-title {
-  font-weight: 700;
-  font-size: 1.25rem;
+  font-weight: 800;
+  font-size: 1.3rem;
   color: #ffffff;
+  letter-spacing: -0.5px;
 }
 
 .brand-subtitle {
   font-size: 0.75rem;
-  color: var(--primary-gold);
+  color: var(--primary-accent);
   font-weight: 700;
   letter-spacing: 0.5px;
 }
@@ -105,7 +108,7 @@ body {
 .nav-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 /* Mode Switcher Pills */
@@ -124,15 +127,15 @@ body {
   background: transparent;
   color: var(--text-muted);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .mode-btn.active {
-  background: var(--primary-gold);
+  background: var(--primary-accent);
   color: #000;
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.4);
 }
 
 .nav-tabs {
@@ -160,7 +163,7 @@ body {
 }
 
 .nav-tab.active {
-  background: linear-gradient(135deg, var(--primary-gold), #b8860b);
+  background: linear-gradient(135deg, var(--primary-accent), var(--accent-emerald));
   color: #000;
   font-weight: 700;
 }
@@ -203,7 +206,7 @@ body {
 .form-control {
   width: 100%;
   padding: 14px 18px;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(10, 15, 26, 0.9);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   color: var(--text-main);
@@ -213,9 +216,8 @@ body {
 }
 
 .form-control:focus {
-  border-color: var(--primary-gold);
-  box-shadow: 0 0 0 3px var(--primary-gold-glow);
-  outline: 2px solid var(--primary-gold);
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px var(--primary-accent-glow);
 }
 
 .btn {
@@ -231,19 +233,15 @@ body {
   gap: 8px;
 }
 
-.btn:focus-visible {
-  outline: 2px solid var(--primary-gold);
-}
-
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-gold) 0%, #b8860b 100%);
-  color: #0b0f19;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  background: linear-gradient(135deg, var(--primary-accent) 0%, var(--accent-emerald) 100%);
+  color: #080c14;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
 }
 
 .btn-secondary {
@@ -265,21 +263,24 @@ body {
 }
 
 .merchant-pill {
-  padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.06);
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   font-size: 0.85rem;
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .merchant-pill:hover, .merchant-pill.active {
-  background: rgba(212, 175, 55, 0.2);
-  border-color: var(--primary-gold);
-  color: var(--primary-gold);
-  font-weight: 600;
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--primary-accent);
+  color: var(--primary-accent);
+  font-weight: 700;
 }
 
 /* Card Visual Presentation */
@@ -309,7 +310,7 @@ body {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-weight: 700;
+  font-weight: 800;
   opacity: 0.9;
 }
 
@@ -329,7 +330,7 @@ body {
 /* Results Section */
 .results-grid {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 350px 1fr;
   gap: 24px;
 }
 
@@ -340,7 +341,7 @@ body {
 }
 
 .best-card-spotlight {
-  background: linear-gradient(180deg, rgba(212, 175, 55, 0.12) 0%, rgba(22, 28, 45, 0.9) 100%);
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.12) 0%, rgba(18, 24, 38, 0.9) 100%);
   border: 1px solid var(--border-highlight);
   border-radius: var(--radius-lg);
   padding: 24px;
@@ -353,7 +354,7 @@ body {
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, var(--primary-gold), #b8860b);
+  background: linear-gradient(135deg, var(--primary-accent), var(--accent-emerald));
   color: #000;
   font-size: 0.75rem;
   font-weight: 800;
@@ -380,7 +381,7 @@ body {
   align-items: center;
   gap: 6px;
   margin-top: 10px;
-  padding: 6px 14px;
+  padding: 6px 16px;
   background: rgba(16, 185, 129, 0.2);
   border: 1px solid var(--accent-emerald);
   color: var(--accent-emerald);
@@ -396,6 +397,27 @@ body {
   color: #000;
 }
 
+/* My Active Cards Horizontal Scrollbar */
+.active-wallet-bar {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-top: 12px;
+}
+
+.active-wallet-card-chip {
+  flex: 0 0 200px;
+  height: 110px;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+
 /* Rankings Table / Cards List */
 .rankings-list {
   display: flex;
@@ -408,14 +430,14 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  background: rgba(30, 41, 59, 0.5);
+  background: rgba(26, 35, 54, 0.6);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   transition: all 0.2s ease;
 }
 
 .ranking-item:hover {
-  background: rgba(30, 41, 59, 0.85);
+  background: rgba(26, 35, 54, 0.9);
   border-color: rgba(255, 255, 255, 0.25);
 }
 
@@ -427,7 +449,7 @@ body {
 }
 
 .rank-1 .rank-number {
-  color: var(--primary-gold);
+  color: var(--primary-accent);
 }
 
 .card-info {
@@ -496,9 +518,9 @@ body {
 }
 
 .card-selector-item.selected {
-  border-color: var(--primary-gold);
-  box-shadow: 0 0 15px var(--primary-gold-glow);
-  background: rgba(45, 55, 72, 0.8);
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 15px var(--primary-accent-glow);
+  background: rgba(30, 42, 68, 0.9);
 }
 
 .check-icon {
@@ -517,7 +539,7 @@ body {
 }
 
 .card-selector-item.selected .check-icon {
-  background: var(--primary-gold);
+  background: var(--primary-accent);
   color: #000;
   font-weight: 900;
 }
@@ -550,7 +572,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(5, 8, 16, 0.88);
   backdrop-filter: var(--backdrop-blur);
   z-index: 9999;
   display: flex;
@@ -560,10 +582,10 @@ body {
 }
 
 .modal-card {
-  background: var(--bg-primary);
+  background: var(--bg-surface);
   border: 1px solid var(--border-highlight);
   border-radius: var(--radius-lg);
-  max-width: 600px;
+  max-width: 650px;
   width: 100%;
   padding: 28px;
   box-shadow: var(--shadow-main);

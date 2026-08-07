@@ -44,7 +44,7 @@
     <main id="tab-recommender" class="tab-content active">
       <!-- Input Panel -->
       <section class="glass-panel">
-        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 6px;">Find Best Card & Activated Deals</h2>
+        <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 6px;">Find Best Card & Activated Deals</h2>
         <p style="color: var(--text-muted); font-size: 0.95rem;">Enter a US merchant domain or brand name to calculate your highest returning card in real time.</p>
         
         <div class="search-box-wrapper">
@@ -80,6 +80,19 @@
         </div>
       </section>
 
+      <!-- Active Wallet Cards Bar on Main Page -->
+      <section class="glass-panel" style="padding: 18px 24px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="font-size: 1rem; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+            <span>💳</span> My Saved Wallet Cards (<span id="saved-wallet-count">0</span>)
+          </h3>
+          <button id="change-saved-wallet-btn" style="background: none; border: none; color: var(--primary-accent); font-weight: 700; font-size: 0.8rem; cursor: pointer;">
+            + Edit Selected Cards
+          </button>
+        </div>
+        <div id="active-wallet-scroll-bar" class="active-wallet-bar"></div>
+      </section>
+
       <!-- Results Grid -->
       <section class="results-grid">
         <!-- Left Column: Spotlight Best Card -->
@@ -98,7 +111,7 @@
         <div class="glass-panel" style="margin-bottom: 0;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <h3 style="font-size: 1.1rem; font-weight: 700;">Full Wallet Rankings</h3>
-            <span id="matching-offers-count" style="font-size: 0.8rem; background: rgba(212,175,55,0.2); color: var(--primary-gold); padding: 4px 12px; border-radius: var(--radius-full); font-weight: 700;">
+            <span id="matching-offers-count" style="font-size: 0.8rem; background: rgba(56,189,248,0.2); color: var(--primary-accent); padding: 4px 12px; border-radius: var(--radius-full); font-weight: 700;">
               1 Targeted Offer Available
             </span>
           </div>
@@ -180,26 +193,25 @@
       </div>
 
       <div id="onboarding-step-banks" style="display: none;">
-        <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 6px;">Step 1: Select Your Banks</h2>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Choose the financial institutions where you hold credit or debit cards.</p>
+        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 4px;">Step 1: Select Your Banks</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Select each bank where you currently hold accounts or cards:</p>
         
-        <div id="wizard-banks-grid" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 240px; overflow-y: auto; margin-bottom: 20px;"></div>
+        <div id="wizard-banks-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; max-height: 280px; overflow-y: auto; margin-bottom: 20px;"></div>
 
-        <div style="display: flex; justify-content: space-between;">
-          <button id="wizard-skip-btn" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Skip Setup</button>
-          <button id="wizard-next-cards-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.85rem;">Next: Pick Cards ➔</button>
+        <div style="display: flex; justify-content: flex-end;">
+          <button id="wizard-next-cards-btn" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">Next: Pick Cards ➔</button>
         </div>
       </div>
 
       <div id="onboarding-step-cards" style="display: none;">
-        <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 6px;">Step 2: Select Your Cards</h2>
+        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 4px;">Step 2: Select Your Credit & Debit Cards</h2>
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Pick the cards in your wallet. We will save this on your device so you never have to repeat this!</p>
         
-        <div id="wizard-cards-grid" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 260px; overflow-y: auto; margin-bottom: 20px;"></div>
+        <div id="wizard-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; max-height: 320px; overflow-y: auto; margin-bottom: 20px;"></div>
 
         <div style="display: flex; justify-content: space-between;">
-          <button id="wizard-back-banks-btn" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">← Back</button>
-          <button id="wizard-save-btn" class="btn btn-primary" style="padding: 8px 24px; font-size: 0.85rem;">Save & Finish 🚀</button>
+          <button id="wizard-back-banks-btn" class="btn btn-secondary" style="padding: 10px 18px; font-size: 0.85rem;">← Back to Banks</button>
+          <button id="wizard-save-btn" class="btn btn-primary" style="padding: 10px 26px; font-size: 0.9rem;">Save & View Wallet 🚀</button>
         </div>
       </div>
     </div>

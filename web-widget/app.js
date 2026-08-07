@@ -1,4 +1,4 @@
-import { CARD_DATABASE, ISSUERS, getCardById, getCardsByIssuer } from '../shared/card-database.js';
+import { CARD_DATABASE, ISSUERS_DATA, getCardById } from '../shared/card-database.js';
 import { TARGETED_OFFERS, OFFER_CATEGORIES } from '../shared/offer-database.js';
 import { calculateBestCardForDomain } from '../shared/calculator.js';
 
@@ -12,7 +12,6 @@ let activeCategoryFilter = 'all';
 
 function saveUserCards() {
   localStorage.setItem(STORAGE_KEY_CARDS, JSON.stringify(userCardIds));
-  // Sync to chrome extension storage if available
   if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
     chrome.storage.local.set({ userCardIds });
   }
@@ -27,6 +26,10 @@ const quickPills = document.querySelectorAll('.merchant-pill');
 const modeSimpleBtn = document.getElementById('mode-simple-btn');
 const modePowerBtn = document.getElementById('mode-power-btn');
 const editWalletBtn = document.getElementById('edit-wallet-btn');
+const changeSavedWalletBtn = document.getElementById('change-saved-wallet-btn');
+
+const activeWalletScrollBar = document.getElementById('active-wallet-scroll-bar');
+const savedWalletCount = document.getElementById('saved-wallet-count');
 
 const spotlightCardContainer = document.getElementById('spotlight-card-container');
 const spotlightYield = document.getElementById('spotlight-yield');
@@ -77,8 +80,41 @@ modePowerBtn.addEventListener('click', () => {
   runRecommendation();
 });
 
+// Render Active Wallet Bar on Main Page
+function renderActiveWalletBar() {
+  if (!activeWalletScrollBar) return;
+  
+  savedWalletCount.textContent = userCardIds.length;
+
+  if (userCardIds.length === 0) {
+    activeWalletScrollBar.innerHTML = `
+      <div style="color: var(--text-muted); font-size: 0.85rem; padding: 8px 0;">
+        No cards selected yet. Click "Edit Selected Cards" to add cards to your wallet!
+      </div>
+    `;
+    return;
+  }
+
+  activeWalletScrollBar.innerHTML = userCardIds.map(id => {
+    const card = getCardById(id);
+    if (!card) return '';
+    return `
+      <div class="active-wallet-card-chip" style="background: ${card.gradient}; color: ${card.textColor || '#fff'}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.65rem; font-weight:800; text-transform:uppercase;">${card.issuer}</span>
+          <div style="width:20px; height:14px; background:gold; border-radius:3px;"></div>
+        </div>
+        <div style="font-weight:700; font-size:0.85rem; line-height:1.2;">${card.name}</div>
+        <div style="font-size:0.7rem; font-weight:800; align-self:flex-end;">${card.network}</div>
+      </div>
+    `;
+  }).join('');
+}
+
 // Calculate & Render Recommendation
 function runRecommendation() {
+  renderActiveWalletBar();
+
   const domain = merchantInput.value.trim() || 'nike.com';
   const amount = parseFloat(amountInput.value) || 100;
 
@@ -88,7 +124,7 @@ function runRecommendation() {
   const top = result.topRecommendation;
   if (top) {
     spotlightCardContainer.innerHTML = `
-      <div class="card-visual" style="background: ${top.card.gradient}">
+      <div class="card-visual" style="background: ${top.card.gradient}; color: ${top.card.textColor || '#fff'}">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span class="card-issuer">${top.card.issuer}</span>
           <div class="card-chip"></div>
@@ -183,7 +219,7 @@ function renderPortfolio() {
     return `
       <div class="card-selector-item ${isSelected ? 'selected' : ''}" data-id="${card.id}">
         <div class="check-icon">✓</div>
-        <div class="card-visual" style="background: ${card.gradient}; height: 130px; padding: 14px; aspect-ratio: auto;">
+        <div class="card-visual" style="background: ${card.gradient}; color: ${card.textColor || '#fff'}; height: 130px; padding: 14px; aspect-ratio: auto;">
           <div style="display: flex; justify-content: space-between;">
             <span class="card-issuer">${card.issuer}</span>
             <div class="card-chip" style="width: 28px; height: 20px;"></div>
@@ -229,7 +265,6 @@ document.getElementById('clear-all-cards').addEventListener('click', () => {
 
 // Render Categorized Active Deals Feed
 function renderDealsFeed() {
-  // Render Category Pills
   dealsCategoryPills.innerHTML = OFFER_CATEGORIES.map(cat => `
     <button class="merchant-pill ${activeCategoryFilter === cat.id ? 'active' : ''}" data-cat="${cat.id}">
       ${cat.label}
@@ -256,7 +291,7 @@ function renderDealsFeed() {
         </div>
         <div class="card-info">
           <div class="card-name-text">${offer.merchantName} (${offer.domain})</div>
-          <div style="font-size: 0.85rem; color: var(--primary-gold); font-weight: 700;">
+          <div style="font-size: 0.85rem; color: var(--primary-accent); font-weight: 700;">
             ${offer.program} • ${card ? card.name : offer.issuer}
           </div>
           <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
@@ -271,7 +306,7 @@ function renderDealsFeed() {
         <div class="yield-badge">
           ${offer.activationUrl ? `
             <a href="${offer.activationUrl}" target="_blank" rel="noopener" class="activate-btn">Activate Deal 🔗</a>
-          ` : `<div class="yield-val" style="color: var(--primary-gold); font-size: 0.85rem;">Expires ${offer.expires}</div>`}
+          ` : `<div class="yield-val" style="color: var(--primary-accent); font-size: 0.85rem;">Expires ${offer.expires}</div>`}
         </div>
       </div>
     `;
@@ -279,7 +314,7 @@ function renderDealsFeed() {
 }
 
 // 2-Step Onboarding Wizard Logic
-let selectedIssuers = [];
+let selectedIssuers = []; // Starts empty (no automatic select-all)
 let selectedCards = [];
 
 function openOnboardingWizard(startAtStep = 'welcome') {
@@ -301,14 +336,18 @@ editWalletBtn.addEventListener('click', () => {
   openOnboardingWizard('banks');
 });
 
-function renderBanksStep() {
-  selectedIssuers = [...new Set(CARD_DATABASE.map(c => c.issuer))]; // Default select all
+changeSavedWalletBtn.addEventListener('click', () => {
+  openOnboardingWizard('banks');
+});
 
-  wizardBanksGrid.innerHTML = ISSUERS.map(issuer => {
-    const isSel = selectedIssuers.includes(issuer);
+function renderBanksStep() {
+  wizardBanksGrid.innerHTML = ISSUERS_DATA.map(bank => {
+    const isSel = selectedIssuers.includes(bank.id);
     return `
-      <div class="merchant-pill ${isSel ? 'active' : ''}" data-issuer="${issuer}" style="padding: 10px 16px; font-weight:700;">
-        ${isSel ? '✓ ' : ''}${issuer}
+      <div class="merchant-pill ${isSel ? 'active' : ''}" data-issuer="${bank.id}" style="padding: 12px 14px; font-weight:700; background: ${isSel ? bank.badgeBg : 'rgba(255,255,255,0.05)'}; color: #fff; justify-content: flex-start;">
+        <span style="font-size: 1.25rem;">${bank.logo}</span>
+        <span>${bank.name}</span>
+        ${isSel ? '<span style="margin-left:auto; font-weight:900;">✓</span>' : ''}
       </div>
     `;
   }).join('');
@@ -327,6 +366,10 @@ function renderBanksStep() {
 }
 
 document.getElementById('wizard-next-cards-btn').addEventListener('click', () => {
+  if (selectedIssuers.length === 0) {
+    alert('Please select at least one bank to proceed.');
+    return;
+  }
   stepBanks.style.display = 'none';
   stepCards.style.display = 'block';
   renderCardsStep();
@@ -344,13 +387,21 @@ function renderCardsStep() {
   wizardCardsGrid.innerHTML = eligibleCards.map(c => {
     const isSel = selectedCards.includes(c.id);
     return `
-      <div class="merchant-pill ${isSel ? 'active' : ''}" data-cid="${c.id}" style="padding: 8px 12px; font-size: 0.8rem; font-weight:600;">
-        ${isSel ? '✓ ' : ''}${c.name} (${c.type})
+      <div class="card-selector-item ${isSel ? 'selected' : ''}" data-cid="${c.id}">
+        <div class="check-icon">✓</div>
+        <div class="card-visual" style="background: ${c.gradient}; color: ${c.textColor || '#fff'}; height: 110px; padding: 12px; aspect-ratio: auto;">
+          <div style="display: flex; justify-content: space-between;">
+            <span class="card-issuer" style="font-size:0.65rem;">${c.issuer}</span>
+            <div class="card-chip" style="width: 22px; height: 16px;"></div>
+          </div>
+          <div class="card-title" style="font-size: 0.85rem;">${c.name}</div>
+          <div class="card-network" style="font-size: 0.75rem;">${c.network} (${c.type})</div>
+        </div>
       </div>
     `;
   }).join('');
 
-  wizardCardsGrid.querySelectorAll('.merchant-pill').forEach(el => {
+  wizardCardsGrid.querySelectorAll('.card-selector-item').forEach(el => {
     el.addEventListener('click', () => {
       const cid = el.dataset.cid;
       if (selectedCards.includes(cid)) {
@@ -364,16 +415,11 @@ function renderCardsStep() {
 }
 
 document.getElementById('wizard-save-btn').addEventListener('click', () => {
+  if (selectedCards.length === 0) {
+    alert('Please select at least one card.');
+    return;
+  }
   userCardIds = selectedCards;
-  saveUserCards();
-  localStorage.setItem(STORAGE_KEY_FIRST_VISIT, 'true');
-  onboardingModal.style.display = 'none';
-  renderPortfolio();
-  runRecommendation();
-});
-
-document.getElementById('wizard-skip-btn').addEventListener('click', () => {
-  if (userCardIds.length === 0) userCardIds = CARD_DATABASE.map(c => c.id);
   saveUserCards();
   localStorage.setItem(STORAGE_KEY_FIRST_VISIT, 'true');
   onboardingModal.style.display = 'none';
