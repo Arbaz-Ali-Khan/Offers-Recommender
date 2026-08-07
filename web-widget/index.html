@@ -19,19 +19,27 @@
         </div>
       </div>
 
-      <nav class="nav-tabs">
-        <button class="nav-tab active" data-tab="tab-recommender">Recommender</button>
-        <button class="nav-tab" data-tab="tab-portfolio">My Cards</button>
-        <button class="nav-tab" data-tab="tab-offers">Active Deals</button>
-        <button class="nav-tab" data-tab="tab-embed">Embed Widget</button>
-      </nav>
+      <div class="nav-controls">
+        <!-- Simple vs Power Mode Switcher -->
+        <div class="mode-toggle-group" title="Switch between simple cash back view and detailed point valuation mode">
+          <button id="mode-simple-btn" class="mode-btn active">Simple ($)</button>
+          <button id="mode-power-btn" class="mode-btn">Power (pts)</button>
+        </div>
+
+        <nav class="nav-tabs">
+          <button class="nav-tab active" data-tab="tab-recommender">Recommender</button>
+          <button class="nav-tab" data-tab="tab-portfolio">My Cards</button>
+          <button class="nav-tab" data-tab="tab-offers">Active Deals</button>
+          <button class="nav-tab" data-tab="tab-embed">Embed Widget</button>
+        </nav>
+      </div>
     </header>
 
     <!-- Tab 1: Recommender (Default) -->
     <main id="tab-recommender" class="tab-content active">
       <!-- Input Panel -->
       <section class="glass-panel">
-        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">Find Best Card & Activated Deals</h2>
+        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 6px;">Find Best Card & Activated Deals</h2>
         <p style="color: var(--text-muted); font-size: 0.95rem;">Enter a US merchant domain or brand name to calculate your highest returning card in real time.</p>
         
         <div class="search-box-wrapper">
@@ -54,7 +62,7 @@
 
         <!-- Quick Merchants -->
         <div class="quick-merchants">
-          <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 600;">Popular Merchants:</span>
+          <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 700;">Popular Merchants:</span>
           <button class="merchant-pill active" data-domain="nike.com">Nike</button>
           <button class="merchant-pill" data-domain="dell.com">Dell</button>
           <button class="merchant-pill" data-domain="starbucks.com">Starbucks</button>
@@ -71,29 +79,24 @@
         <div class="best-card-spotlight">
           <span class="badge-top">Top Recommendation</span>
           
-          <div id="spotlight-card-container" style="margin: 24px 0 16px 0;">
-            <!-- Rendered by JS -->
-          </div>
+          <div id="spotlight-card-container" style="margin: 24px 0 16px 0;"></div>
 
-          <div class="yield-subtitle">Estimated Financial Return</div>
+          <div class="yield-subtitle" id="spotlight-yield-label">Estimated Financial Return</div>
           <div id="spotlight-yield" class="yield-amount">$0.00</div>
-          <div id="spotlight-details" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">
-            <!-- Rendered by JS -->
-          </div>
+          <div id="spotlight-details" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;"></div>
+          <div id="spotlight-action-container"></div>
         </div>
 
         <!-- Right Column: Full Rankings -->
         <div class="glass-panel" style="margin-bottom: 0;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <h3 style="font-size: 1.1rem; font-weight: 700;">Full Wallet Rankings</h3>
-            <span id="matching-offers-count" style="font-size: 0.8rem; background: rgba(212,175,55,0.15); color: var(--primary-gold); padding: 4px 12px; border-radius: var(--radius-full); font-weight: 600;">
+            <span id="matching-offers-count" style="font-size: 0.8rem; background: rgba(212,175,55,0.2); color: var(--primary-gold); padding: 4px 12px; border-radius: var(--radius-full); font-weight: 700;">
               1 Targeted Offer Available
             </span>
           </div>
 
-          <div id="rankings-container" class="rankings-list">
-            <!-- Rendered by JS -->
-          </div>
+          <div id="rankings-container" class="rankings-list"></div>
         </div>
       </section>
     </main>
@@ -106,15 +109,13 @@
             <h2 style="font-size: 1.4rem; font-weight: 700;">My Credit & Debit Cards</h2>
             <p style="color: var(--text-muted); font-size: 0.9rem;">Select the cards you currently hold to personalize recommendations across all browsers and the extension.</p>
           </div>
-          <div>
+          <div style="display: flex; gap: 8px;">
             <button id="select-all-cards" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Select All</button>
             <button id="clear-all-cards" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Clear All</button>
           </div>
         </div>
 
-        <div id="portfolio-grid" class="portfolio-grid">
-          <!-- Rendered by JS -->
-        </div>
+        <div id="portfolio-grid" class="portfolio-grid"></div>
       </div>
     </section>
 
@@ -122,11 +123,9 @@
     <section id="tab-offers" class="tab-content" style="display: none;">
       <div class="glass-panel">
         <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Active Targeted Deals & Multipliers</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Browse targeted Amex Offers, Chase Offers, and rotating categories available across US issuers.</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Browse targeted Amex Offers, Chase Offers, and rotating categories available across US issuers with 1-click activation links.</p>
 
-        <div id="offers-feed-container" class="rankings-list">
-          <!-- Rendered by JS -->
-        </div>
+        <div id="offers-feed-container" class="rankings-list"></div>
       </div>
     </section>
 
@@ -137,19 +136,34 @@
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Embed this offer recommender on any website, blog, or checkout flow using an iframe.</p>
 
         <div style="margin-bottom: 24px;">
-          <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">Live Widget Preview:</h4>
-          <div style="display: flex; justify-content: center; background: rgba(0,0,0,0.4); padding: 24px; border-radius: var(--radius-md);">
+          <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">Live Widget Preview:</h3>
+          <div style="display: flex; justify-content: center; background: rgba(0,0,0,0.5); padding: 24px; border-radius: var(--radius-md);">
             <iframe id="live-widget-iframe" src="widget.html?domain=nike.com&amount=100" style="width: 360px; height: 500px; border: none; border-radius: 16px; box-shadow: var(--shadow-main);"></iframe>
           </div>
         </div>
 
-        <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">HTML Embed Code:</h4>
+        <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">HTML Embed Code:</h3>
         <div class="code-box">
           <button class="btn btn-secondary copy-btn" id="copy-code-btn">Copy HTML</button>
           <code id="embed-code-snippet">&lt;iframe src="https://your-domain.com/widget.html?domain=nike.com" style="width:360px; height:500px; border:none; border-radius:16px;" loading="lazy"&gt;&lt;/iframe&gt;</code>
         </div>
       </div>
     </section>
+  </div>
+
+  <!-- Onboarding Wizard Modal -->
+  <div id="onboarding-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">⚡ Quick Setup: Select Your Cards</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Check off the cards in your wallet to get personalized offer recommendations instantly.</p>
+      
+      <div id="wizard-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; max-height: 320px; overflow-y: auto; margin-bottom: 20px;"></div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <button id="wizard-skip-btn" class="btn btn-secondary" style="padding: 10px 20px;">Skip for Now</button>
+        <button id="wizard-save-btn" class="btn btn-primary" style="padding: 10px 24px;">Save My Wallet ➔</button>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="app.js"></script>

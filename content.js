@@ -4,7 +4,6 @@
   const currentDomain = window.location.hostname.replace(/^www\./, '');
   if (!currentDomain) return;
 
-  // Ask background service worker for domain recommendation
   chrome.runtime.sendMessage(
     { type: 'GET_RECOMMENDATION', domain: currentDomain, amount: 100 },
     (response) => {
@@ -13,7 +12,6 @@
       const result = response.data;
       const top = result.topRecommendation;
 
-      // Only show banner if there is a targeted offer or >1x reward multiplier
       if (!top || (!top.activeOffer && top.multiplier <= 1)) return;
 
       injectCheckoutOverlay(currentDomain, top, result.availableTargetedOffersCount);
@@ -33,14 +31,14 @@ function injectCheckoutOverlay(domain, top, offerCount) {
   const style = document.createElement('style');
   style.textContent = `
     .banner {
-      background: rgba(10, 14, 23, 0.92);
+      background: rgba(10, 14, 23, 0.94);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(212, 175, 55, 0.4);
       border-radius: 14px;
       padding: 14px 18px;
-      color: #f8fafc;
-      width: 320px;
+      color: #ffffff;
+      width: 330px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(212, 175, 55, 0.15);
       animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
@@ -92,7 +90,7 @@ function injectCheckoutOverlay(domain, top, offerCount) {
       text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
     .card-name {
-      font-weight: 600;
+      font-weight: 700;
       color: #fff;
       line-height: 1.2;
     }
@@ -107,17 +105,22 @@ function injectCheckoutOverlay(domain, top, offerCount) {
       align-items: center;
       margin-top: 4px;
       font-size: 11px;
-      color: #94a3b8;
+      color: #cbd5e1;
     }
     .view-btn {
       background: linear-gradient(135deg, #d4af37, #b8860b);
       border: none;
       color: #000;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 100px;
       cursor: pointer;
       font-size: 11px;
+    }
+    .act-link {
+      color: #10b981;
+      font-weight: 700;
+      text-decoration: none;
     }
   `;
 
@@ -137,7 +140,12 @@ function injectCheckoutOverlay(domain, top, offerCount) {
       </div>
     </div>
 
-    ${top.activeOffer ? `<div class="offer-text">🔥 ${top.offerExplanation}</div>` : ''}
+    ${top.activeOffer ? `
+      <div class="offer-text">
+        🔥 ${top.offerExplanation}
+        ${top.activeOffer.activationUrl ? `<br><a href="${top.activeOffer.activationUrl}" target="_blank" class="act-link">Activate Offer 🔗</a>` : ''}
+      </div>
+    ` : ''}
 
     <div class="footer">
       <span>+$${top.totalUSDYield.toFixed(2)} est. return</span>

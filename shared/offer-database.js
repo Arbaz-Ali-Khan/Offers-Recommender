@@ -1,7 +1,7 @@
 /**
  * Targeted Merchant Offers & MCC Domain Mappings
  * Database of targeted offers (Amex Offers, Chase Offers, BankAmeriDeals, Citi Merchant Offers, CapOne Offers)
- * and domain-to-category mappings.
+ * with direct activation links and domain-to-category mappings.
  */
 
 export const DOMAIN_MCC_MAP = {
@@ -16,7 +16,6 @@ export const DOMAIN_MCC_MAP = {
   'marriott.com': { category: 'hotels', mcc: '7011', name: 'Marriott' },
   'united.com': { category: 'flights', mcc: '4511', name: 'United Airlines' },
   'instacart.com': { category: 'grocery', mcc: '5411', name: 'Instacart' },
-  'door-dash.com': { category: 'dining', mcc: '5812', name: 'DoorDash' },
   'doordash.com': { category: 'dining', mcc: '5812', name: 'DoorDash' },
   'chewy.com': { category: 'pets', mcc: '5995', name: 'Chewy' },
   'walmart.com': { category: 'online_retail', mcc: '5311', name: 'Walmart' },
@@ -33,10 +32,11 @@ export const TARGETED_OFFERS = [
     program: 'Amex Offers',
     domain: 'dell.com',
     merchantName: 'Dell Technologies',
-    type: 'fixed_discount', // 'fixed_discount' | 'percent_discount' | 'bonus_points'
-    value: 25,              // $25 off
-    minSpend: 100,          // min $100 spend
+    type: 'fixed_discount',
+    value: 25,
+    minSpend: 100,
     expires: '2026-12-31',
+    activationUrl: 'https://global.americanexpress.com/offers/eligible',
     description: 'Get $25 statement credit by using your enrolled Card to spend $100+ at Dell.',
     terms: 'Valid online at dell.com only.'
   },
@@ -51,6 +51,7 @@ export const TARGETED_OFFERS = [
     value: 100,
     minSpend: 100,
     expires: '2026-12-31',
+    activationUrl: 'https://global.americanexpress.com/benefits',
     description: '$100 semi-annual statement credit at Dell Technologies.',
     terms: 'Requires activation prior to purchase.'
   },
@@ -62,9 +63,10 @@ export const TARGETED_OFFERS = [
     domain: 'nike.com',
     merchantName: 'Nike',
     type: 'bonus_points',
-    bonusMultiplier: 5,     // +5x MR points
+    bonusMultiplier: 5,
     minSpend: 0,
     expires: '2026-10-31',
+    activationUrl: 'https://global.americanexpress.com/offers/eligible',
     description: 'Get 5 additional Membership Rewards® points per dollar spent at Nike.com.',
     terms: 'Up to 5,000 extra MR points.'
   },
@@ -76,10 +78,11 @@ export const TARGETED_OFFERS = [
     domain: 'starbucks.com',
     merchantName: 'Starbucks',
     type: 'percent_discount',
-    valuePercent: 10,       // 10% back
-    maxDiscount: 3,         // max $3 back
+    valuePercent: 10,
+    maxDiscount: 3,
     minSpend: 0,
     expires: '2026-09-30',
+    activationUrl: 'https://www.chase.com/personal/credit-cards/chase-offers',
     description: 'Earn 10% cash back on your Starbucks purchase (up to $3.00 max credit).',
     terms: 'Single purchase only.'
   },
@@ -95,6 +98,7 @@ export const TARGETED_OFFERS = [
     maxDiscount: 3,
     minSpend: 0,
     expires: '2026-09-30',
+    activationUrl: 'https://www.chase.com/personal/credit-cards/chase-offers',
     description: 'Earn 10% cash back on your Starbucks purchase (up to $3.00 max credit).',
     terms: 'Single purchase only.'
   },
@@ -110,6 +114,7 @@ export const TARGETED_OFFERS = [
     maxDiscount: 75,
     minSpend: 0,
     expires: '2026-09-30',
+    activationUrl: 'https://www.chase.com/personal/credit-cards/freedom/calendar',
     description: 'Earn 5% total cash back (or 5x points) on up to $1,500 in combined purchases.',
     terms: 'Activation required.'
   },
@@ -124,6 +129,7 @@ export const TARGETED_OFFERS = [
     value: 15,
     minSpend: 150,
     expires: '2026-11-15',
+    activationUrl: 'https://online.citi.com/US/ag/merchant-offers',
     description: 'Get $15 statement credit on purchases of $150 or more at Best Buy.',
     terms: 'Online or in-store.'
   },
@@ -138,6 +144,7 @@ export const TARGETED_OFFERS = [
     value: 50,
     minSpend: 200,
     expires: '2026-12-15',
+    activationUrl: 'https://global.americanexpress.com/offers/eligible',
     description: 'Get $50 back when spending $200+ at participating Marriott Bonvoy properties.',
     terms: 'Must book directly on marriott.com.'
   },
@@ -153,6 +160,7 @@ export const TARGETED_OFFERS = [
     maxDiscount: 15,
     minSpend: 0,
     expires: '2026-10-15',
+    activationUrl: 'https://capitalone.com/credit-cards/offers/',
     description: '10% cash back on Instacart grocery delivery.',
     terms: 'Click through Capital One portal.'
   },
@@ -168,6 +176,7 @@ export const TARGETED_OFFERS = [
     maxDiscount: 10,
     minSpend: 0,
     expires: '2026-11-30',
+    activationUrl: 'https://www.wellsfargo.com/mobile/deals/',
     description: 'Earn 15% cash back on your next Uber ride or Uber Eats order (up to $10).',
     terms: 'Valid via app or online.'
   }
@@ -179,7 +188,6 @@ export function getDomainInfo(hostname) {
   if (DOMAIN_MCC_MAP[cleanHost]) {
     return { domain: cleanHost, ...DOMAIN_MCC_MAP[cleanHost] };
   }
-  // Try matching parent domain (e.g. store.nike.com -> nike.com)
   const parts = cleanHost.split('.');
   if (parts.length > 2) {
     const parentDomain = parts.slice(-2).join('.');
