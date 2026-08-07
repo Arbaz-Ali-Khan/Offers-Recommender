@@ -42,32 +42,43 @@
 
     <!-- Tab 1: Recommender (Default) -->
     <main id="tab-recommender" class="tab-content active">
-      <!-- Input Panel -->
-      <section class="glass-panel">
-        <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 6px;">Find Best Card & Activated Deals</h2>
-        <p style="color: var(--text-muted); font-size: 0.95rem;">Enter a US merchant domain or brand name to calculate your highest returning card in real time.</p>
-        
-        <div class="search-box-wrapper">
+      <!-- Capital One Shopping Style Hero Banner -->
+      <section class="glass-panel" style="background: linear-gradient(135deg, rgba(18,24,38,0.9), rgba(30,42,68,0.8)); text-align: center; padding: 36px 24px; margin-bottom: 24px; border: 1px solid var(--border-highlight);">
+        <div style="display: inline-flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px;">
+          <span style="font-size: 0.75rem; background: rgba(56,189,248,0.2); color: var(--primary-accent); padding: 3px 12px; border-radius: var(--radius-full); font-weight: 700;">⚡ Free Browser Extension</span>
+          <span style="font-size: 0.75rem; background: rgba(16,185,129,0.2); color: var(--accent-emerald); padding: 3px 12px; border-radius: var(--radius-full); font-weight: 700;">💳 34+ US Banks & Cards</span>
+          <span style="font-size: 0.75rem; background: rgba(212,175,55,0.2); color: var(--accent-gold); padding: 3px 12px; border-radius: var(--radius-full); font-weight: 700;">🔒 100% Device-Local Privacy</span>
+        </div>
+
+        <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.5px;">
+          Save Time & Money Automatically at Checkout
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 720px; margin: 0 auto 24px auto; line-height: 1.6;">
+          CardSpectra automatically matches your credit & debit cards with targeted bank offers, 5x point multipliers, and statement credits across 500+ top US stores.
+        </p>
+
+        <!-- Search Input Box -->
+        <div class="search-box-wrapper" style="max-width: 680px; margin: 0 auto;">
           <div class="input-group">
-            <label class="input-label" for="merchant-input">Merchant Domain / Name</label>
+            <label class="input-label" for="merchant-input">Merchant Domain / Store Name</label>
             <input type="text" id="merchant-input" class="form-control" placeholder="e.g. nike.com, dell.com, starbucks.com, lego.com" value="nike.com" autocomplete="off">
           </div>
           
-          <div class="input-group" style="max-width: 180px;">
-            <label class="input-label" for="amount-input">Spend Amount ($)</label>
+          <div class="input-group" style="max-width: 160px;">
+            <label class="input-label" for="amount-input">Spend ($)</label>
             <input type="number" id="amount-input" class="form-control" value="100" min="1">
           </div>
           
           <div style="align-self: flex-end;">
-            <button id="calculate-btn" class="btn btn-primary">
-              <span>Calculate Top Yield</span> ➔
+            <button id="calculate-btn" class="btn btn-primary" style="padding: 14px 24px;">
+              <span>Calculate Yield</span> ➔
             </button>
           </div>
         </div>
 
-        <!-- Quick Merchants -->
-        <div class="quick-merchants">
-          <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 700;">Popular Merchants:</span>
+        <!-- Quick Merchants Pills -->
+        <div class="quick-merchants" style="justify-content: center; margin-top: 20px;">
+          <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 700;">Trending Stores:</span>
           <button class="merchant-pill active" data-domain="nike.com">Nike</button>
           <button class="merchant-pill" data-domain="dell.com">Dell</button>
           <button class="merchant-pill" data-domain="lego.com">LEGO Shop</button>
