@@ -35,7 +35,6 @@ const spotlightCardContainer = document.getElementById('spotlight-card-container
 const spotlightYield = document.getElementById('spotlight-yield');
 const spotlightYieldLabel = document.getElementById('spotlight-yield-label');
 const spotlightDetails = document.getElementById('spotlight-details');
-const spotlightActionContainer = document.getElementById('spotlight-action-container');
 
 const rankingsContainer = document.getElementById('rankings-container');
 const matchingOffersCount = document.getElementById('matching-offers-count');
@@ -151,16 +150,6 @@ function runRecommendation() {
       }
       spotlightDetails.innerHTML = subText;
     }
-
-    if (top.activeOffer && top.activeOffer.activationUrl) {
-      spotlightActionContainer.innerHTML = `
-        <a href="${top.activeOffer.activationUrl}" target="_blank" rel="noopener" class="activate-btn">
-          Activate ${top.activeOffer.program} Offer 🔗
-        </a>
-      `;
-    } else {
-      spotlightActionContainer.innerHTML = '';
-    }
   }
 
   matchingOffersCount.textContent = `${result.availableTargetedOffersCount} Targeted Offer${result.availableTargetedOffersCount !== 1 ? 's' : ''} Available`;
@@ -183,7 +172,6 @@ function runRecommendation() {
           ${item.activeOffer ? `
             <div class="offer-tag">
               🔥 ${item.offerExplanation}
-              ${item.activeOffer.activationUrl ? `<a href="${item.activeOffer.activationUrl}" target="_blank" style="color:var(--accent-emerald); margin-left:6px; font-weight:700;">[Activate 🔗]</a>` : ''}
             </div>
           ` : ''}
         </div>
@@ -194,11 +182,6 @@ function runRecommendation() {
       </div>
     `;
   }).join('');
-
-  const iframe = document.getElementById('live-widget-iframe');
-  if (iframe) {
-    iframe.src = `widget.html?domain=${encodeURIComponent(domain)}&amount=${amount}`;
-  }
 }
 
 calculateBtn.addEventListener('click', runRecommendation);
@@ -304,9 +287,7 @@ function renderDealsFeed() {
           ` : ''}
         </div>
         <div class="yield-badge">
-          ${offer.activationUrl ? `
-            <a href="${offer.activationUrl}" target="_blank" rel="noopener" class="activate-btn">Activate Deal 🔗</a>
-          ` : `<div class="yield-val" style="color: var(--primary-accent); font-size: 0.85rem;">Expires ${offer.expires}</div>`}
+          <div class="yield-val" style="color: var(--primary-accent); font-size: 0.85rem;">Expires ${offer.expires}</div>
         </div>
       </div>
     `;
@@ -314,7 +295,7 @@ function renderDealsFeed() {
 }
 
 // 2-Step Onboarding Wizard Logic
-let selectedIssuers = []; // Starts empty (no automatic select-all)
+let selectedIssuers = [];
 let selectedCards = [];
 
 function openOnboardingWizard(startAtStep = 'welcome') {
@@ -425,15 +406,6 @@ document.getElementById('wizard-save-btn').addEventListener('click', () => {
   onboardingModal.style.display = 'none';
   renderPortfolio();
   runRecommendation();
-});
-
-// Copy Embed Code
-document.getElementById('copy-code-btn')?.addEventListener('click', () => {
-  const code = document.getElementById('embed-code-snippet').innerText;
-  navigator.clipboard.writeText(code);
-  const btn = document.getElementById('copy-code-btn');
-  btn.textContent = 'Copied!';
-  setTimeout(() => btn.textContent = 'Copy HTML', 2000);
 });
 
 // Initial Setup

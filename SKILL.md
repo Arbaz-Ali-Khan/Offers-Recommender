@@ -5,7 +5,7 @@ description: Comprehensive development guide, architecture standards, and workfl
 
 # CardSpectra - US Credit & Debit Card Offer Recommender
 
-A unified development reference and operational workflow for building **CardSpectra** (US Credit & Debit Card Offer Recommender). This system consists of an embeddable multi-browser web widget and a Manifest V3 Cross-Browser Extension (Chrome, Firefox, Edge, Safari) inspired by Capital One Shopping, designed to automatically match and recommend optimal payment cards, merchant-specific targeted offers, and category reward multipliers at e-commerce checkout.
+A unified development reference and operational workflow for building **CardSpectra** (US Credit & Debit Card Offer Recommender). This system consists of a standalone web app and a Manifest V3 Cross-Browser Extension (Chrome, Firefox, Edge, Safari) inspired by Capital One Shopping, designed to automatically match and recommend optimal payment cards, merchant-specific targeted offers, and category reward multipliers at e-commerce checkout.
 
 ---
 
@@ -13,7 +13,7 @@ A unified development reference and operational workflow for building **CardSpec
 
 ### A. Capital One Shopping-Style Experience
 - **Hero Savings Engine**: Direct domain search, automatic domain detection on active browser tabs, and instant yield calculation.
-- **Trending Merchant Deals Grid**: Visual tiles displaying merchant logos, cash back return rates (e.g., `Up to 10% back`, `$100 statement credit`), and 1-click bank offer activation links.
+- **Trending Merchant Deals Grid**: Visual tiles displaying merchant logos and cash back return rates (e.g., `Up to 10% back`, `$100 statement credit`).
 - **Device-Local Memory**: All user card selections are persisted in `localStorage` & `chrome.storage.local`. Zero remote server required for portfolio management.
 - **2-Step Visual Onboarding**:
   - **Step 1**: Bank Selection with brand logos (*Amex 🦁, Chase 🔷, Capital One ⚡, Citi 🌐, Discover 🟧, BofA 🏛️, Wells Fargo 🐎, US Bank 🛡️, Apple 🍎, Bilt 🏢, Robinhood 🪶, Fidelity 🌲, Fintech Debits 📱*).
@@ -68,4 +68,4 @@ Where point valuations default to:
 ## 5. Development Maintenance Rules
 
 > [!IMPORTANT]
-> **Mandatory Update Rule**: Whenever modifying card database schemas, offer activation links, extension manifest MV3 parameters, or widget iframe communication APIs, you MUST update this `SKILL.md` file and keep `PROMPT_README.md` synchronized.
+> **Mandatory Update Rule**: Whenever modifying card database schemas, offer activation rules, extension manifest MV3 parameters, or UI navigation APIs, you MUST update this `SKILL.md` file and keep `PROMPT_README.md` synchronized.

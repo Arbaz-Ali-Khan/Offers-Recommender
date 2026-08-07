@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CardSpectra - US Credit & Debit Card Offer Recommender</title>
-  <meta name="description" content="CardSpectra - Universal US Credit & Debit Card Offer Recommender & Embeddable Web Widget. Maximize cash back, targeted Amex/Chase offers, and reward point multipliers.">
+  <meta name="description" content="CardSpectra - Universal US Credit & Debit Card Offer Recommender. Maximize cash back, targeted Amex/Chase offers, and reward point multipliers.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -35,7 +35,6 @@
           <button class="nav-tab active" data-tab="tab-recommender">Recommender</button>
           <button class="nav-tab" data-tab="tab-portfolio">My Cards</button>
           <button class="nav-tab" data-tab="tab-offers">Active Deals</button>
-          <button class="nav-tab" data-tab="tab-embed">Embed Widget</button>
         </nav>
       </div>
     </header>
@@ -115,7 +114,6 @@
           <div class="yield-subtitle" id="spotlight-yield-label">Estimated Financial Return</div>
           <div id="spotlight-yield" class="yield-amount">$0.00</div>
           <div id="spotlight-details" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;"></div>
-          <div id="spotlight-action-container"></div>
         </div>
 
         <!-- Right Column: Full Rankings -->
@@ -160,27 +158,6 @@
         <div id="deals-category-pills" class="quick-merchants" style="margin-bottom: 20px;"></div>
 
         <div id="offers-feed-container" class="rankings-list"></div>
-      </div>
-    </section>
-
-    <!-- Tab 4: Embed Widget Generator -->
-    <section id="tab-embed" class="tab-content" style="display: none;">
-      <div class="glass-panel">
-        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Embed Universal CardSpectra Widget</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Embed this CardSpectra offer recommender on any website, blog, or checkout flow using an iframe.</p>
-
-        <div style="margin-bottom: 24px;">
-          <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">Live Widget Preview:</h3>
-          <div style="display: flex; justify-content: center; background: rgba(0,0,0,0.5); padding: 24px; border-radius: var(--radius-md);">
-            <iframe id="live-widget-iframe" src="widget.html?domain=nike.com&amount=100" style="width: 360px; height: 500px; border: none; border-radius: 16px; box-shadow: var(--shadow-main);"></iframe>
-          </div>
-        </div>
-
-        <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">HTML Embed Code:</h3>
-        <div class="code-box">
-          <button class="btn btn-secondary copy-btn" id="copy-code-btn">Copy HTML</button>
-          <code id="embed-code-snippet">&lt;iframe src="https://your-domain.com/widget.html?domain=nike.com" style="width:360px; height:500px; border:none; border-radius:16px;" loading="lazy"&gt;&lt;/iframe&gt;</code>
-        </div>
       </div>
     </section>
   </div>

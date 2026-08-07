@@ -31,9 +31,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     let sub = `Multiplier: ${top.multiplier}x points`;
     if (top.activeOffer) {
       sub += `<br><span style="color: var(--accent-emerald); font-weight:700;">🔥 ${top.offerExplanation}</span>`;
-      if (top.activeOffer.activationUrl) {
-        sub += `<br><a href="${top.activeOffer.activationUrl}" target="_blank" style="color:var(--accent-emerald); font-weight:700; font-size:0.7rem;">Activate Offer 🔗</a>`;
-      }
     }
     document.getElementById('popup-details').innerHTML = sub;
   }

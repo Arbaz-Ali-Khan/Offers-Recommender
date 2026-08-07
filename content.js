@@ -117,11 +117,6 @@ function injectCheckoutOverlay(domain, top, offerCount) {
       cursor: pointer;
       font-size: 11px;
     }
-    .act-link {
-      color: #10b981;
-      font-weight: 700;
-      text-decoration: none;
-    }
   `;
 
   const banner = document.createElement('div');
@@ -143,7 +138,6 @@ function injectCheckoutOverlay(domain, top, offerCount) {
     ${top.activeOffer ? `
       <div class="offer-text">
         🔥 ${top.offerExplanation}
-        ${top.activeOffer.activationUrl ? `<br><a href="${top.activeOffer.activationUrl}" target="_blank" class="act-link">Activate Offer 🔗</a>` : ''}
       </div>
     ` : ''}
 

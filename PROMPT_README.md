@@ -4,21 +4,20 @@
 
 ```markdown
 You are an expert AI software architect and senior frontend/extension engineer.
-Your task is to build "CardSpectra" — a privacy-first, high-aesthetic US Credit & Debit Card Offer Recommender web application, embeddable iframe widget, and Manifest V3 cross-browser extension (Chrome, Edge, Firefox, Safari) inspired by Capital One Shopping.
+Your task is to build "CardSpectra" — a privacy-first, high-aesthetic US Credit & Debit Card Offer Recommender web application and Manifest V3 cross-browser extension (Chrome, Edge, Firefox, Safari) inspired by Capital One Shopping.
 
 ---
 
 ## 🎯 CORE SYSTEM REQUIREMENTS
 
-1. **Dual Form Factors**:
-   - **Universal Web App & Embeddable Widget**: Standalone responsive Web App view and compact embeddable `<iframe>` widget supporting cross-domain `window.postMessage` communication (`CARD_RECOMMENDED`).
+1. **Form Factors**:
+   - **Standalone Web App**: Responsive Web App view with merchant yield search, wallet management, and active targeted deals feed.
    - **Manifest V3 Cross-Browser Extension**: Background service worker, active domain detection, dynamic badge indicators (`DEAL`, `4x`), unobtrusive Shadow DOM checkout overlay banner, action popup UI, and detailed side panel UI.
 
 2. **Capital One Shopping-Style Design System**:
    - **Hero Section**: Clean domain search bar, spend amount input, instant yield spotlight, and popular merchant pill tiles (Nike, Dell, LEGO, Starbucks, Amazon, Best Buy, Instacart, Marriott, Uber).
    - **Translucent Watermark Theme**: Deep obsidian background (`#080c14`) with a floating translucent SVG watermark pattern layer (`opacity: 0.03`) of bank logos and credit card icons.
    - **Categorized Deals Feed**: Active targeted offers grouped by category tabs (🛒 Grocery, 🎮 Toys & Games, ⚡ Electronics, 🍽️ Dining, ✈️ Travel, ⛽ Gas & Transit, 👗 Apparel, 🏡 Home & Garden) with real-time expiration status badges (`Expires in 3 days!`, `Ending Soon`).
-   - **1-Click Bank Enrollment**: Direct offer activation links (`🔗 Activate Offer`) leading to bank offer portals (Amex Offers, Chase Offers, BankAmeriDeals, Citi Merchant Offers, Capital One Offers).
 
 3. **Catchy Onboarding & Device-Local Storage**:
    - **Welcome Screen**: Greetings: "👋💳✨ Welcome to CardSpectra! Your ultimate card savings companion."
@@ -54,10 +53,8 @@ Your task is to build "CardSpectra" — a privacy-first, high-aesthetic US Credi
 │   ├── sidepanel.html
 │   ├── sidepanel.js
 │   └── sidepanel.css
-├── web-widget/                # Universal Web App & Embeddable Widget
+├── web-widget/                # Universal Web App
 │   ├── index.html
-│   ├── widget.html
-│   ├── widget.js
 │   ├── app.js
 │   └── style.css
 ├── shared/                    # Core Calculation & Data Modules
