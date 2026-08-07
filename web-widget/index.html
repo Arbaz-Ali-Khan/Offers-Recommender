@@ -20,6 +20,11 @@
       </div>
 
       <div class="nav-controls">
+        <!-- Edit Wallet Button -->
+        <button id="edit-wallet-btn" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.8rem; font-weight: 700;" title="Edit your device saved cards">
+          ⚙️ Edit My Wallet
+        </button>
+
         <!-- Simple vs Power Mode Switcher -->
         <div class="mode-toggle-group" title="Switch between simple cash back view and detailed point valuation mode">
           <button id="mode-simple-btn" class="mode-btn active">Simple ($)</button>
@@ -45,7 +50,7 @@
         <div class="search-box-wrapper">
           <div class="input-group">
             <label class="input-label" for="merchant-input">Merchant Domain / Name</label>
-            <input type="text" id="merchant-input" class="form-control" placeholder="e.g. nike.com, dell.com, starbucks.com" value="nike.com" autocomplete="off">
+            <input type="text" id="merchant-input" class="form-control" placeholder="e.g. nike.com, dell.com, starbucks.com, lego.com" value="nike.com" autocomplete="off">
           </div>
           
           <div class="input-group" style="max-width: 180px;">
@@ -65,9 +70,11 @@
           <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 700;">Popular Merchants:</span>
           <button class="merchant-pill active" data-domain="nike.com">Nike</button>
           <button class="merchant-pill" data-domain="dell.com">Dell</button>
+          <button class="merchant-pill" data-domain="lego.com">LEGO Shop</button>
           <button class="merchant-pill" data-domain="starbucks.com">Starbucks</button>
           <button class="merchant-pill" data-domain="amazon.com">Amazon</button>
           <button class="merchant-pill" data-domain="bestbuy.com">Best Buy</button>
+          <button class="merchant-pill" data-domain="instacart.com">Instacart</button>
           <button class="merchant-pill" data-domain="marriott.com">Marriott</button>
           <button class="merchant-pill" data-domain="uber.com">Uber</button>
         </div>
@@ -123,7 +130,10 @@
     <section id="tab-offers" class="tab-content" style="display: none;">
       <div class="glass-panel">
         <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Active Targeted Deals & Multipliers</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Browse targeted Amex Offers, Chase Offers, and rotating categories available across US issuers with 1-click activation links.</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Browse targeted Amex Offers, Chase Offers, and rotating deals categorized by spending type.</p>
+
+        <!-- Category Pills Bar -->
+        <div id="deals-category-pills" class="quick-merchants" style="margin-bottom: 20px;"></div>
 
         <div id="offers-feed-container" class="rankings-list"></div>
       </div>
@@ -154,14 +164,43 @@
   <!-- Onboarding Wizard Modal -->
   <div id="onboarding-modal" class="modal-overlay" style="display: none;">
     <div class="modal-card">
-      <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">⚡ Quick Setup: Select Your Cards</h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Check off the cards in your wallet to get personalized offer recommendations instantly.</p>
-      
-      <div id="wizard-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; max-height: 320px; overflow-y: auto; margin-bottom: 20px;"></div>
+      <div id="onboarding-step-welcome">
+        <div style="font-size: 2.5rem; text-align: center; margin-bottom: 12px;">👋💳✨</div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: 12px; line-height: 1.3;">
+          Welcome to Your Ultimate Card Savings Companion!
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center; margin-bottom: 24px; line-height: 1.6;">
+          Unlock maximum cash back, reward points, and hidden targeted bank offers effortlessly every time you shop online.
+        </p>
+        <div style="text-align: center;">
+          <button id="welcome-lets-go-btn" class="btn btn-primary" style="padding: 14px 36px; font-size: 1.1rem; border-radius: var(--radius-full);">
+            Let's Go! 🚀
+          </button>
+        </div>
+      </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <button id="wizard-skip-btn" class="btn btn-secondary" style="padding: 10px 20px;">Skip for Now</button>
-        <button id="wizard-save-btn" class="btn btn-primary" style="padding: 10px 24px;">Save My Wallet ➔</button>
+      <div id="onboarding-step-banks" style="display: none;">
+        <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 6px;">Step 1: Select Your Banks</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Choose the financial institutions where you hold credit or debit cards.</p>
+        
+        <div id="wizard-banks-grid" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 240px; overflow-y: auto; margin-bottom: 20px;"></div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <button id="wizard-skip-btn" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Skip Setup</button>
+          <button id="wizard-next-cards-btn" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.85rem;">Next: Pick Cards ➔</button>
+        </div>
+      </div>
+
+      <div id="onboarding-step-cards" style="display: none;">
+        <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 6px;">Step 2: Select Your Cards</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Pick the cards in your wallet. We will save this on your device so you never have to repeat this!</p>
+        
+        <div id="wizard-cards-grid" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 260px; overflow-y: auto; margin-bottom: 20px;"></div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <button id="wizard-back-banks-btn" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">← Back</button>
+          <button id="wizard-save-btn" class="btn btn-primary" style="padding: 8px 24px; font-size: 0.85rem;">Save & Finish 🚀</button>
+        </div>
       </div>
     </div>
   </div>

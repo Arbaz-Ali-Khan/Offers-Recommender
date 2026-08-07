@@ -1,16 +1,21 @@
-import { CARD_DATABASE, getCardById } from '../shared/card-database.js';
-import { TARGETED_OFFERS } from '../shared/offer-database.js';
+import { CARD_DATABASE, ISSUERS, getCardById, getCardsByIssuer } from '../shared/card-database.js';
+import { TARGETED_OFFERS, OFFER_CATEGORIES } from '../shared/offer-database.js';
 import { calculateBestCardForDomain } from '../shared/calculator.js';
 
-// User Settings State
+// Device Local Storage Keys
 const STORAGE_KEY_CARDS = 'user_card_portfolio';
-const STORAGE_KEY_FIRST_VISIT = 'user_has_visited';
+const STORAGE_KEY_FIRST_VISIT = 'user_has_visited_device';
 
 let userCardIds = JSON.parse(localStorage.getItem(STORAGE_KEY_CARDS) || '[]');
 let displayMode = 'simple'; // 'simple' | 'power'
+let activeCategoryFilter = 'all';
 
 function saveUserCards() {
   localStorage.setItem(STORAGE_KEY_CARDS, JSON.stringify(userCardIds));
+  // Sync to chrome extension storage if available
+  if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+    chrome.storage.local.set({ userCardIds });
+  }
 }
 
 // DOM Elements
@@ -21,6 +26,7 @@ const quickPills = document.querySelectorAll('.merchant-pill');
 
 const modeSimpleBtn = document.getElementById('mode-simple-btn');
 const modePowerBtn = document.getElementById('mode-power-btn');
+const editWalletBtn = document.getElementById('edit-wallet-btn');
 
 const spotlightCardContainer = document.getElementById('spotlight-card-container');
 const spotlightYield = document.getElementById('spotlight-yield');
@@ -33,8 +39,14 @@ const matchingOffersCount = document.getElementById('matching-offers-count');
 
 const portfolioGrid = document.getElementById('portfolio-grid');
 const offersFeedContainer = document.getElementById('offers-feed-container');
+const dealsCategoryPills = document.getElementById('deals-category-pills');
 
 const onboardingModal = document.getElementById('onboarding-modal');
+const welcomeLetsGoBtn = document.getElementById('welcome-lets-go-btn');
+const stepWelcome = document.getElementById('onboarding-step-welcome');
+const stepBanks = document.getElementById('onboarding-step-banks');
+const stepCards = document.getElementById('onboarding-step-cards');
+const wizardBanksGrid = document.getElementById('wizard-banks-grid');
 const wizardCardsGrid = document.getElementById('wizard-cards-grid');
 
 // Tab Navigation Listener
@@ -95,7 +107,6 @@ function runRecommendation() {
       }
       spotlightDetails.innerHTML = subText;
     } else {
-      // Power User Mode (Detailed Point Breakdown)
       spotlightYieldLabel.textContent = 'Points Earned & Net Value Yield';
       spotlightYield.textContent = `${Math.round(top.basePointsEarned)} pts ($${top.totalUSDYield.toFixed(2)})`;
       let subText = `Base Multiplier: <strong>${top.multiplier}x</strong> • Point Val: $${(top.card.rewardType === 'CASH_BACK' ? 0.01 : 0.015).toFixed(3)}/pt`;
@@ -105,7 +116,6 @@ function runRecommendation() {
       spotlightDetails.innerHTML = subText;
     }
 
-    // Render Direct Offer Activation Button
     if (top.activeOffer && top.activeOffer.activationUrl) {
       spotlightActionContainer.innerHTML = `
         <a href="${top.activeOffer.activationUrl}" target="_blank" rel="noopener" class="activate-btn">
@@ -117,10 +127,8 @@ function runRecommendation() {
     }
   }
 
-  // Render Offer Counter Badge
   matchingOffersCount.textContent = `${result.availableTargetedOffersCount} Targeted Offer${result.availableTargetedOffersCount !== 1 ? 's' : ''} Available`;
 
-  // Render Rankings List
   rankingsContainer.innerHTML = result.rankings.map((item, index) => {
     let yieldStr = `+$${item.totalUSDYield.toFixed(2)}`;
     let subStr = `${item.multiplier}x points • Base: $${item.baseDollarsYield.toFixed(2)}`;
@@ -151,14 +159,12 @@ function runRecommendation() {
     `;
   }).join('');
 
-  // Update Live Widget Preview Iframe
   const iframe = document.getElementById('live-widget-iframe');
   if (iframe) {
     iframe.src = `widget.html?domain=${encodeURIComponent(domain)}&amount=${amount}`;
   }
 }
 
-// Event Listeners
 calculateBtn.addEventListener('click', runRecommendation);
 
 quickPills.forEach(pill => {
@@ -186,7 +192,7 @@ function renderPortfolio() {
           <div class="card-network" style="font-size: 0.85rem;">${card.network}</div>
         </div>
         <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">
-          Category Yields: ${Object.entries(card.baseMultipliers).slice(0, 3).map(([k, v]) => `${k}:${v}x`).join(', ')}
+          Multipliers: ${Object.entries(card.baseMultipliers).slice(0, 3).map(([k, v]) => `${k}:${v}x`).join(', ')}
         </div>
       </div>
     `;
@@ -221,9 +227,27 @@ document.getElementById('clear-all-cards').addEventListener('click', () => {
   runRecommendation();
 });
 
-// Render Active Deals Feed
+// Render Categorized Active Deals Feed
 function renderDealsFeed() {
-  offersFeedContainer.innerHTML = TARGETED_OFFERS.map(offer => {
+  // Render Category Pills
+  dealsCategoryPills.innerHTML = OFFER_CATEGORIES.map(cat => `
+    <button class="merchant-pill ${activeCategoryFilter === cat.id ? 'active' : ''}" data-cat="${cat.id}">
+      ${cat.label}
+    </button>
+  `).join('');
+
+  dealsCategoryPills.querySelectorAll('.merchant-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      activeCategoryFilter = pill.dataset.cat;
+      renderDealsFeed();
+    });
+  });
+
+  const filteredDeals = activeCategoryFilter === 'all'
+    ? TARGETED_OFFERS
+    : TARGETED_OFFERS.filter(o => o.category === activeCategoryFilter);
+
+  offersFeedContainer.innerHTML = filteredDeals.length > 0 ? filteredDeals.map(offer => {
     const card = getCardById(offer.cardId);
     return `
       <div class="ranking-item">
@@ -238,6 +262,11 @@ function renderDealsFeed() {
           <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
             ${offer.description}
           </div>
+          ${offer.expiryStatus ? `
+            <div style="display:inline-block; font-size:0.75rem; background:rgba(244,63,94,0.15); color:var(--accent-rose); padding:2px 8px; border-radius:100px; font-weight:700; margin-top:4px;">
+              ⏱️ ${offer.expiryStatus}
+            </div>
+          ` : ''}
         </div>
         <div class="yield-badge">
           ${offer.activationUrl ? `
@@ -246,61 +275,111 @@ function renderDealsFeed() {
         </div>
       </div>
     `;
+  }).join('') : `<div style="text-align:center; color:var(--text-muted); padding:24px;">No active deals matching this category right now.</div>`;
+}
+
+// 2-Step Onboarding Wizard Logic
+let selectedIssuers = [];
+let selectedCards = [];
+
+function openOnboardingWizard(startAtStep = 'welcome') {
+  onboardingModal.style.display = 'flex';
+  stepWelcome.style.display = startAtStep === 'welcome' ? 'block' : 'none';
+  stepBanks.style.display = startAtStep === 'banks' ? 'block' : 'none';
+  stepCards.style.display = 'none';
+  
+  if (startAtStep === 'banks') renderBanksStep();
+}
+
+welcomeLetsGoBtn.addEventListener('click', () => {
+  stepWelcome.style.display = 'none';
+  stepBanks.style.display = 'block';
+  renderBanksStep();
+});
+
+editWalletBtn.addEventListener('click', () => {
+  openOnboardingWizard('banks');
+});
+
+function renderBanksStep() {
+  selectedIssuers = [...new Set(CARD_DATABASE.map(c => c.issuer))]; // Default select all
+
+  wizardBanksGrid.innerHTML = ISSUERS.map(issuer => {
+    const isSel = selectedIssuers.includes(issuer);
+    return `
+      <div class="merchant-pill ${isSel ? 'active' : ''}" data-issuer="${issuer}" style="padding: 10px 16px; font-weight:700;">
+        ${isSel ? '✓ ' : ''}${issuer}
+      </div>
+    `;
   }).join('');
-}
 
-// Onboarding Wizard Setup
-function setupOnboardingWizard() {
-  const hasVisited = localStorage.getItem(STORAGE_KEY_FIRST_VISIT);
-  if (!hasVisited && userCardIds.length === 0) {
-    onboardingModal.style.display = 'flex';
-  }
-
-  let wizardSelected = [...(userCardIds.length > 0 ? userCardIds : CARD_DATABASE.slice(0, 5).map(c => c.id))];
-
-  function renderWizardGrid() {
-    wizardCardsGrid.innerHTML = CARD_DATABASE.map(c => {
-      const isSel = wizardSelected.includes(c.id);
-      return `
-        <div class="merchant-pill ${isSel ? 'active' : ''}" data-id="${c.id}" style="padding: 8px 12px; font-size: 0.8rem; font-weight:600; text-align:center;">
-          ${isSel ? '✓ ' : ''}${c.name}
-        </div>
-      `;
-    }).join('');
-
-    wizardCardsGrid.querySelectorAll('.merchant-pill').forEach(el => {
-      el.addEventListener('click', () => {
-        const cid = el.dataset.id;
-        if (wizardSelected.includes(cid)) {
-          wizardSelected = wizardSelected.filter(id => id !== cid);
-        } else {
-          wizardSelected.push(cid);
-        }
-        renderWizardGrid();
-      });
+  wizardBanksGrid.querySelectorAll('.merchant-pill').forEach(el => {
+    el.addEventListener('click', () => {
+      const issuer = el.dataset.issuer;
+      if (selectedIssuers.includes(issuer)) {
+        selectedIssuers = selectedIssuers.filter(i => i !== issuer);
+      } else {
+        selectedIssuers.push(issuer);
+      }
+      renderBanksStep();
     });
-  }
-
-  renderWizardGrid();
-
-  document.getElementById('wizard-save-btn').addEventListener('click', () => {
-    userCardIds = wizardSelected;
-    saveUserCards();
-    localStorage.setItem(STORAGE_KEY_FIRST_VISIT, 'true');
-    onboardingModal.style.display = 'none';
-    renderPortfolio();
-    runRecommendation();
-  });
-
-  document.getElementById('wizard-skip-btn').addEventListener('click', () => {
-    if (userCardIds.length === 0) userCardIds = CARD_DATABASE.map(c => c.id);
-    saveUserCards();
-    localStorage.setItem(STORAGE_KEY_FIRST_VISIT, 'true');
-    onboardingModal.style.display = 'none';
-    renderPortfolio();
-    runRecommendation();
   });
 }
+
+document.getElementById('wizard-next-cards-btn').addEventListener('click', () => {
+  stepBanks.style.display = 'none';
+  stepCards.style.display = 'block';
+  renderCardsStep();
+});
+
+document.getElementById('wizard-back-banks-btn').addEventListener('click', () => {
+  stepCards.style.display = 'none';
+  stepBanks.style.display = 'block';
+});
+
+function renderCardsStep() {
+  const eligibleCards = CARD_DATABASE.filter(c => selectedIssuers.includes(c.issuer));
+  selectedCards = userCardIds.length > 0 ? [...userCardIds] : eligibleCards.map(c => c.id);
+
+  wizardCardsGrid.innerHTML = eligibleCards.map(c => {
+    const isSel = selectedCards.includes(c.id);
+    return `
+      <div class="merchant-pill ${isSel ? 'active' : ''}" data-cid="${c.id}" style="padding: 8px 12px; font-size: 0.8rem; font-weight:600;">
+        ${isSel ? '✓ ' : ''}${c.name} (${c.type})
+      </div>
+    `;
+  }).join('');
+
+  wizardCardsGrid.querySelectorAll('.merchant-pill').forEach(el => {
+    el.addEventListener('click', () => {
+      const cid = el.dataset.cid;
+      if (selectedCards.includes(cid)) {
+        selectedCards = selectedCards.filter(id => id !== cid);
+      } else {
+        selectedCards.push(cid);
+      }
+      renderCardsStep();
+    });
+  });
+}
+
+document.getElementById('wizard-save-btn').addEventListener('click', () => {
+  userCardIds = selectedCards;
+  saveUserCards();
+  localStorage.setItem(STORAGE_KEY_FIRST_VISIT, 'true');
+  onboardingModal.style.display = 'none';
+  renderPortfolio();
+  runRecommendation();
+});
+
+document.getElementById('wizard-skip-btn').addEventListener('click', () => {
+  if (userCardIds.length === 0) userCardIds = CARD_DATABASE.map(c => c.id);
+  saveUserCards();
+  localStorage.setItem(STORAGE_KEY_FIRST_VISIT, 'true');
+  onboardingModal.style.display = 'none';
+  renderPortfolio();
+  runRecommendation();
+});
 
 // Copy Embed Code
 document.getElementById('copy-code-btn')?.addEventListener('click', () => {
@@ -312,10 +391,13 @@ document.getElementById('copy-code-btn')?.addEventListener('click', () => {
 });
 
 // Initial Setup
-if (userCardIds.length === 0) {
-  userCardIds = CARD_DATABASE.map(c => c.id);
+const hasVisitedDevice = localStorage.getItem(STORAGE_KEY_FIRST_VISIT);
+if (!hasVisitedDevice) {
+  openOnboardingWizard('welcome');
+} else {
+  if (userCardIds.length === 0) userCardIds = CARD_DATABASE.map(c => c.id);
 }
+
 renderPortfolio();
 renderDealsFeed();
 runRecommendation();
-setupOnboardingWizard();
