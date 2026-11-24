@@ -28,6 +28,6 @@ Automatically calculates maximum financial yield per e-commerce transaction acro
 
 ## 🌐 Live Output & Deployment URLs
 
-- 🔗 **Public Web App & Widget**: [https://arbazalikhan450.github.io/Offers-Recommender/](https://arbazalikhan450.github.io/Offers-Recommender/)
-- 🔗 **Direct Recommender Page**: [https://arbazalikhan450.github.io/Offers-Recommender/web-widget/index.html](https://arbazalikhan450.github.io/Offers-Recommender/web-widget/index.html)
+- 🔗 **Public Web App & Widget**: [https://Arbaz-Ali-Khan.github.io/Offers-Recommender/](https://Arbaz-Ali-Khan.github.io/Offers-Recommender/)
+- 🔗 **Direct Recommender Page**: [https://Arbaz-Ali-Khan.github.io/Offers-Recommender/web-widget/index.html](https://Arbaz-Ali-Khan.github.io/Offers-Recommender/web-widget/index.html)
 - 💻 **Local Development Server**: [http://localhost:8080/web-widget/index.html](http://localhost:8080/web-widget/index.html)
